@@ -1,0 +1,73 @@
+/* slot.css */
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  /* List View */
+  .slot-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+    max-height: 500px; /* Fixed height for scrollable container */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .slot-item {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .slot-item p {
+    margin: 0;
+    color: #555;
+  }
+  
+  .slot-item h3 {
+    margin: 0 0 5px;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .slot-item span {
+    display: block;
+    font-size: 0.9em;
+    color: #777;
+  }
+  
+  /* Button Styles */
+  .book-button {
+    background-color: #690437;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .book-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .book-button:hover {
+    background-color: #d4b0c2;
+  }
+  

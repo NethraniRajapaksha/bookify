@@ -1,0 +1,30 @@
+/* appointment.css */
+/* appointment.css */
+.appointment-container {
+    background-color: #7393b3; /* Set a light background color */
+    height: 100vh; /* Ensure it covers the full height of the viewport */
+    width: 100vw; /* Ensure it covers the full width of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .welcome-message {
+    text-align: center;
+    background-color: #690437; /* Bookify blue */
+    color: #fffefe;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .welcome-message h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-message p {
+    font-size: 1.2rem;
+  }
+  
