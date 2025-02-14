@@ -34,24 +34,32 @@ function Nav() {
   // Handle User Login
   const handleLogin = async () => {
     const response = await fetch("http://localhost:8800/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: userData.email, password: userData.password }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userData.email, password: userData.password }),
     });
 
     const data = await response.json();
 
     if (response.ok && data.token) {
-      alert("Login Successful!");
-      // Store token and user data in localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({ email: userData.email })); // Save email here
-      setIsLoginOpen(false); // Close modal
-      navigate("/slots"); // Navigate to Appointment Page
+        alert("Login Successful!");
+
+        // Store token and user data in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify({ email: userData.email, isAdmin: data.isAdmin }));
+
+        // Redirect based on admin status
+        if (data.isAdmin) {
+            navigate("/admin"); // Redirect admin to the admin page
+        } else {
+            navigate("/slots"); // Redirect normal users to the slots page
+        }
+
+        setIsLoginOpen(false); // Close login modal
     } else {
-      alert(data.error || "Login failed. Please check your credentials.");
+        alert(data.error || "Login failed. Please check your credentials.");
     }
-  };
+};
 
   // Handle Logout
   const handleLogout = () => {

@@ -9,7 +9,7 @@ function Appointment() {
         <br/> <br/> <br/> <br/><br/> <br/> <br/> <br/><br/> <br/> 
         <h1>Welcome to Bookify!</h1>
         <p>Your appointment booking platform.</p>
-        <br/> <br/> <br/> <br/><br/> <br/> <br/> <br/><br/> <br/> <br/> <br/> 
+        <br/> <br/> <br/> <br/><br/> <br/> <br/> <br/><br/> <br/> <br/> <br/><br/> <br/> <br/> <br/><br/> <br/> <br/> 
       
     </div>
   );

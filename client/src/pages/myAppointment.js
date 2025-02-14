@@ -1,102 +1,99 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Admin/admin.css'; // Import the CSS file for Admin Dashboard
+import './CSS/appointment.css'
 
 function AdminDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [slots, setSlots] = useState([]);
-  const [loadingAppointments, setLoadingAppointments] = useState(true);
-  const [loadingSlots, setLoadingSlots] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Get the JWT token from localStorage or context
     const token = localStorage.getItem("token");
 
-    // Fetch appointments for the logged-in user
-    axios.get('http://localhost:8800/appointments', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
-        setAppointments(response.data);
-        setLoadingAppointments(false);
-      })
-      .catch(err => {
-        setError("Failed to fetch appointments.");
-        setLoadingAppointments(false);
-      });
+    if (!token) {
+      setError("Unauthorized: No token found.");
+      setLoading(false);
+      return;
+    }
 
-    // Fetch slots for the admin dashboard
-    axios.get('http://localhost:8800/slots', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
-        setSlots(response.data);
-        setLoadingSlots(false);
+    const fetchAppointments = axios.get('http://localhost:8800/appointments', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const fetchSlots = axios.get('http://localhost:8800/slots', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    Promise.all([fetchAppointments, fetchSlots])
+      .then(([appointmentsResponse, slotsResponse]) => {
+        setAppointments(appointmentsResponse.data); // Ensure all appointments are fetched
+        setSlots(slotsResponse.data);
+        setLoading(false);
       })
       .catch(err => {
-        setError("Failed to fetch slots.");
-        setLoadingSlots(false);
+        setError("Failed to fetch data. " + err.message);
+        setLoading(false);
       });
   }, []);
 
-  if (loadingAppointments || loadingSlots) return <div className="loading">Loading data...</div>;
-  if (error) return <div className="error">{error}</div>;
+  // Function to handle appointment deletion 
+  const handleDeleteAppointment = (id) => {
+    // Filter out the appointment with the given ID (simulating deletion on frontend)
+    const updatedAppointments = appointments.filter(appointment => appointment.id !== id);
+    setAppointments(updatedAppointments); // Update the state to remove the deleted appointment
+    alert("Appointment deleted successfully! ");
+  };
 
   return (
     <div className="admin-container">
       <h2>Admin Dashboard</h2>
-      
+
+      {/* All Appointments Section */}
       <section className="appointments-section">
-        <h3>Appointments</h3>
+        <h3>All Appointments</h3>
         <table className="appointments-table">
           <thead>
             <tr>
+              {/* <th>Patient Name</th> */}
               <th>Title</th>
               <th>Description</th>
               <th>Date</th>
               <th>Time</th>
+              <th>Action</th> {/* New column for the delete button */}
             </tr>
           </thead>
           <tbody>
-            {appointments.map(appointment => (
-              <tr key={appointment.id}>
-                <td>{appointment.title}</td>
-                <td>{appointment.description}</td>
-                <td>{appointment.date}</td>
-                <td>{appointment.time}</td>
+            {appointments.length > 0 ? (
+              appointments.map((appointment) => (
+                 <tr key={appointment.id}> {/* Make sure each key is unique */}
+                  {/* <td>{appointment.patientName}</td> */}
+                  <td>{appointment.title}</td>
+                  <td>{appointment.description}</td>
+                  <td>{appointment.date}</td>
+                  <td>{appointment.time}</td>
+                  <td>
+                    <button
+                      className="book-button"
+                      onClick={() => handleDeleteAppointment(appointment.id)} // Ensure correct ID is passed
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6">No appointments available.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </section>
 
-      <section className="slots-section">
-        <h3>Available Slots</h3>
-        <table className="slots-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time Slot</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            {slots.map(slot => (
-              <tr key={slot.id}>
-                <td>{slot.date}</td>
-                <td>{slot.timeslot}</td>
-                <td>{slot.location}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-    </div>
+      
+    </div> 
   );
 }
 

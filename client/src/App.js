@@ -43,30 +43,34 @@ function Login({ setToken }) {
 
 function App() {
   const [token, setToken] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken); // Load token from localStorage
-    }
+      const storedToken = localStorage.getItem('token');
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedToken) {
+          setToken(storedToken); // Load token from localStorage
+          setIsAdmin(storedUser?.isAdmin || false); // Load admin status from localStorage
+      }
   }, []);
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Appointments />} />
-          <Route path="/add" element={<Add />} />
-          <Route path="/update" element={<Update />} />
-          <Route path="/my" element={<MyAppointment />} />
-          <Route path="/login" element={<Login setToken={setToken} />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/slots" element={<Slot />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+      <div className="App">
+          <BrowserRouter>
+              <Nav />
+              <Routes>
+                  <Route path="/" element={<Appointments />} />
+                  <Route path="/add" element={<Add />} />
+                  <Route path="/update" element={<Update />} />
+                  <Route path="/my" element={<MyAppointment />} />
+                  <Route path="/login" element={<Login setToken={setToken} />} />
+                  {isAdmin && <Route path="/admin" element={<Admin />} />}
+                  <Route path="/slots" element={<Slot />} />
+              </Routes>
+          </BrowserRouter>
+      </div>
   );
 }
+
 
 export default App;
